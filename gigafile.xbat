@@ -1,0 +1,14 @@
+@EO
+
+if "%~1"=="" (%url%=input(URL: )) else %url%=%~1
+%dlkey%=
+if not "%~2"=="" %dlkey%=&dlkey=%~2
+
+%domain%=split(%url%,/,2)
+%fid%=split(%url%,/,3)
+
+%cook%=get_cookie(%url%)
+
+%nurl%=https://%domain%/download.php?file=%fid%%dlkey%
+downloadc(%nurl%,%cook%)
+del %cook%
