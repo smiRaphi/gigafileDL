@@ -1,4 +1,5 @@
 @EO
+@import(lib.net)
 
 if "%~1"=="" (%url%=input(URL: )) else %url%=%~1
 %dlkey%=
@@ -11,4 +12,16 @@ if not "%~2"=="" %dlkey%=&dlkey=%~2
 
 %nurl%=https://%domain%/download.php?file=%fid%%dlkey%
 downloadc(%nurl%,%cook%)
+if exist download.php (
+    del download.php
+    echo failed, trying different api point
+    %nurl%=https://%domain%/dl_zip.php?file=%fid%%dlkey%
+    downloadc(!nurl!,%cook%)
+    if exist dl_zip.php or exist download.php (
+        del dl_zip.php download.php
+        echo failed to download file
+        del %cook%
+        xerr()
+    )
+)
 del %cook%
